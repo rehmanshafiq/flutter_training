@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/widgets/text_widget.dart';
+import 'package:go_router/go_router.dart';
+import '../app_router/route_strings.dart';
 import '../components/designer_section.dart';
 import '../components/interior_section.dart';
 import '../components/toolbar.dart';
@@ -62,6 +64,7 @@ class _CardInteriorState extends State<CardInterior> {
 
           return GestureDetector(
             onTap: () {
+              context.push(AppRouteConstants.detail);
               setState(() {
                 selectedIndex = index; // Update selection
               });

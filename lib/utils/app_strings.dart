@@ -5,6 +5,7 @@ class AppStrings {
   static const searchScreen = "search_screen";
   static const checkoutScreen = "checkout_screen";
   static const profileScreen = "profile_screen";
+  static const detailScreen = "detail_screen";
 
   static const english = "English";
   static const arabic = "العربية";

@@ -1,4 +1,5 @@
 import 'package:flutter_training/app_router/route_strings.dart';
+import 'package:flutter_training/screens/detail_screen.dart';
 import 'package:flutter_training/screens/search_screen.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/checkout_screen.dart';
@@ -31,6 +32,10 @@ class AppRoutes {
           GoRoute(
             path: AppRouteConstants.profile,
             builder: (context, state) => ProfileScreen(),
+          ),
+          GoRoute(
+            path: AppRouteConstants.detail,
+            builder: (context, state) => DetailScreen(),
           ),
         ],
       ),
