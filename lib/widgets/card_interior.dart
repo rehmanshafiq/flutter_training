@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/widgets/text_widget.dart';
 import '../components/designer_section.dart';
 import '../components/interior_section.dart';
 import '../components/toolbar.dart';
@@ -74,7 +75,7 @@ class _CardInteriorState extends State<CardInterior> {
                 border: isSelected ? Border.all(color: Colors.grey, width: 2) : Border.all(color: Colors.grey, width: 2),
               ),
               child: Center(
-                child: Text(
+                child: MyText(
                   categories[index],
                   style: TextStyle(
                     fontSize: 16,

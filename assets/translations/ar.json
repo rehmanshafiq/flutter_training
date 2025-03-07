@@ -1,7 +1,14 @@
 {
-  "hello": "مرحبا",
+  "hello": "شاشة الملف الشخصي",
   "language": "اللغة",
   "hello_jack": "مرحبا،\nجاك دويل",
   "search_screen": "شاشة البحث",
-  "checkout_screen": "شاشة الدفع"
+  "checkout_screen": "شاشة الدفع",
+  "profile_screen": "شاشة الملف الشخصي",
+  "interior": "الداخلية",
+  "sofa": "أريكة",
+  "chairs": "كراسي",
+  "lamp": "مصباح",
+  "card_heading": "موضوع أصفر\nالداخلية",
+  "designer_heading": "مصمم بالقرب منك"
 }

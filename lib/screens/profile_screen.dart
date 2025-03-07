@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_training/utils/app_strings.dart';
 import 'package:flutter_training/widgets/text_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -10,12 +12,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
 
   bool isArabic = false;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   isArabic = context.locale.languageCode == 'ar';
-  // }
 
   void _toggleLanguage(bool value) {
     Locale newLocale = !isArabic ? Locale('ar', '') : Locale('en', '');
@@ -30,27 +26,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     isArabic = context.locale.languageCode == 'ar';
 
     return Scaffold(
-      appBar: AppBar(
-        title: MyText('language'),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MyText(
-              'hello',
-              style: TextStyle(fontSize: 24),
+              AppStrings.profileScreen,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("English"),
+                Text(AppStrings.english),
                 Switch(
                   value: isArabic,
                   onChanged: _toggleLanguage,
                 ),
-                Text("العربية"),
+                Text(AppStrings.arabic),
               ],
             ),
           ],

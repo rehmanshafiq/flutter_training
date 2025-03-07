@@ -1,7 +1,14 @@
 {
-  "hello": "Hello",
+  "hello": "Profile Screen",
   "language": "Language",
   "hello_jack":"Hello,\nJack Doyle",
   "search_screen": "Search Screen",
-  "checkout_screen": "Checkout Screen"
+  "checkout_screen": "Checkout Screen",
+  "profile_screen": "Profile Screen",
+  "interior": "Interior",
+  "sofa": "Sofa",
+  "chairs": "Chairs",
+  "lamp": "Lamp",
+  "card_heading": "Yellow theme\nInterior",
+  "designer_heading": "Designer Near You"
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/widgets/text_widget.dart';
 import '../utils/app_strings.dart';
 
 
@@ -19,7 +20,7 @@ Widget designNearList(BuildContext context) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          MyText(
             AppStrings.designerHeading,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
             // style: TextStyle(

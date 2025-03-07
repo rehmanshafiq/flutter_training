@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/widgets/text_widget.dart';
 import '../utils/app_strings.dart';
 import '../models/Interior.dart';
 
@@ -53,7 +54,7 @@ Widget buildInteriorCard({required String imagePath, required String title}) {
         ),
         Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Text(
+          child: MyText(
             title,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
