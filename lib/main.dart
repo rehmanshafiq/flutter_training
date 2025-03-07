@@ -1,11 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_training/utils//themes.dart';
 import 'app_router/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  String name = dotenv.env['BASE_URL'] ?? 'https://www.facebook.com';
+  print(name);
 
   runApp(
     EasyLocalization(
