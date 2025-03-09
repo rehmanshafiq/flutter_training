@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/widgets/text_widget.dart';
-import '../utils/app_strings.dart';
-import '../models/Interior.dart';
-
-final List<Interior> interiors = [
-  Interior(image: AppStrings.cardImagePath, title: AppStrings.cardHeading1),
-  Interior(image: AppStrings.cardImagePath, title: AppStrings.cardHeading2),
-  Interior(image: AppStrings.cardImagePath, title: AppStrings.cardHeading3),
-];
+import 'package:provider/provider.dart';
+import '../state_management/firebase_remote_provider.dart';
+import '../widgets/text_widget.dart';
 
 Widget buildInteriorList() {
-  return SizedBox(
-    height: 240, // Adjusted to fit the card design
-    child: ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: interiors.length,
-      itemBuilder: (context, index) {
-        return buildInteriorCard(
-          imagePath: interiors[index].image,
-          title: interiors[index].title,
-        );
-      },
-    ),
+  return Consumer<RemoteConfigProvider>(
+    builder: (context, provider, child) {
+      if (provider.isLoading) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      if (provider.themes.isEmpty) {
+        return const Center(child: Text("No interior themes available"));
+      }
+
+      return SizedBox(
+        height: 240, // Adjusted to fit the card design
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: provider.themes.length,
+          itemBuilder: (context, index) {
+            final theme = provider.themes[index];
+            return buildInteriorCard(
+              imagePath: theme["image"]!,
+              title: theme["title"]!,
+            );
+          },
+        ),
+      );
+    },
   );
 }
 
-/// Interior Card UI
 Widget buildInteriorCard({required String imagePath, required String title}) {
   return Container(
     width: 180, // Adjust card width
@@ -45,11 +51,17 @@ Widget buildInteriorCard({required String imagePath, required String title}) {
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
-          child: Image.asset(
+          child: Image.network(
             imagePath,
             width: double.infinity,
             height: 150,
             fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return const Center(child: CircularProgressIndicator());
+            },
+            errorBuilder: (context, error, stackTrace) =>
+            const Icon(Icons.error, size: 50),
           ),
         ),
         Padding(

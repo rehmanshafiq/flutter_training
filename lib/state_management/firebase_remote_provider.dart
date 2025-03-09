@@ -12,13 +12,15 @@ class RemoteConfigProvider extends ChangeNotifier {
   List<String>? _categories = [];
   List<String>? get categories => _categories;
 
+  List<Map<String, String>> themes = [];
+
   RemoteConfigProvider() {
     _initialize();
   }
 
   Future<void> _initialize() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-        fetchTimeout: Duration(minutes: 2),
+        fetchTimeout: Duration(seconds: 10),
         minimumFetchInterval: Duration.zero));
     await _fetchConfig();
   }
@@ -33,6 +35,23 @@ class RemoteConfigProvider extends ChangeNotifier {
         _categories = List<String>.from(categoriesMap['my_strings']);
       } else {
         _categories = []; // If empty, set default empty list
+      }
+
+      // Fetch themes
+      String themesJson = _remoteConfig.getString('interior_themes');
+      debugPrint("Themes JSON: $themesJson");
+
+      if (themesJson.isNotEmpty) {
+        final decodedData = jsonDecode(themesJson) as Map<String, dynamic>;
+
+        themes = List<Map<String, String>>.from(decodedData["themes"].map((theme) => {
+          "image": theme["image"].toString(),  // Explicitly convert to String
+          "title": theme["title"].toString()   // Explicitly convert to String
+        }));
+
+        debugPrint("Parsed Themes: $themes");
+      } else {
+        debugPrint("Themes JSON is empty!");
       }
 
       _isLoading = false;
