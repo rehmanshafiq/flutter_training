@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../models/InteriorTheme.dart';
+
 class RemoteConfigProvider extends ChangeNotifier {
 
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
@@ -12,7 +14,9 @@ class RemoteConfigProvider extends ChangeNotifier {
   List<String>? _categories = [];
   List<String>? get categories => _categories;
 
-  List<Map<String, String>> themes = [];
+  // List<Map<String, String>> themes = [];
+  List<InteriorTheme> themes = [];
+
 
   RemoteConfigProvider() {
     _initialize();
@@ -44,14 +48,11 @@ class RemoteConfigProvider extends ChangeNotifier {
       if (themesJson.isNotEmpty) {
         final decodedData = jsonDecode(themesJson) as Map<String, dynamic>;
 
-        themes = List<Map<String, String>>.from(decodedData["themes"].map((theme) => {
-          "image": theme["image"].toString(),  // Explicitly convert to String
-          "title": theme["title"].toString()   // Explicitly convert to String
-        }));
+        themes = (decodedData["themes"] as List<dynamic>)
+            .map((theme) => InteriorTheme.fromJson(theme))
+            .toList();
 
         debugPrint("Parsed Themes: $themes");
-      } else {
-        debugPrint("Themes JSON is empty!");
       }
 
       _isLoading = false;

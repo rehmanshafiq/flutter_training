@@ -22,8 +22,8 @@ Widget buildInteriorList() {
           itemBuilder: (context, index) {
             final theme = provider.themes[index];
             return buildInteriorCard(
-              imagePath: theme["image"]!,
-              title: theme["title"]!,
+              imagePath: theme.image,
+              title: theme.title,
             );
           },
         ),
