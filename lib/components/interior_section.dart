@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../state_management/firebase_remote_provider.dart';
@@ -51,18 +52,24 @@ Widget buildInteriorCard({required String imagePath, required String title}) {
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
-          child: Image.network(
-            imagePath,
+          child: CachedNetworkImage(
             width: double.infinity,
             height: 150,
             fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return const Center(child: CircularProgressIndicator());
-            },
-            errorBuilder: (context, error, stackTrace) =>
-            const Icon(Icons.error, size: 50),
-          ),
+            imageUrl: imagePath,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                Center(
+                  child: SizedBox(
+                    width: 30, // Set the desired width
+                    height: 30, // Set the desired height
+                    child: CircularProgressIndicator(
+                      value: downloadProgress.progress,
+                      strokeWidth: 3,
+                    ),
+                  ),
+                ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          )
         ),
         Padding(
           padding: const EdgeInsets.all(12.0),
