@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_training/state_management/bottom_routing_provier.dart';
 import 'package:flutter_training/state_management/firebase_remote_provider.dart';
 import 'package:flutter_training/utils//themes.dart';
 import 'package:provider/provider.dart';
@@ -23,10 +24,11 @@ void main() async {
         supportedLocales: [Locale('en'), Locale('ar')],
         path: 'assets/translations',
         fallbackLocale: Locale('en'),
-        child: ChangeNotifierProvider(
-          create: (_) => RemoteConfigProvider(),
-          child: const MyApp(),
-        ),
+        child: MyApp()
+        // ChangeNotifierProvider(
+        //   create: (_) => RemoteConfigProvider(),
+        //   child: const MyApp(),
+        // ),
     ),
   );
 }
@@ -37,13 +39,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
+          ChangeNotifierProvider(create: (context) => BottomRoutingProvider())
+        ],
+      child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         theme: AppTheme.getTheme,
         routerConfig: AppRoutes.router,
+      ),
     );
   }
 

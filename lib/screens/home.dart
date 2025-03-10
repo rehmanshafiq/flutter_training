@@ -1,59 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/app_router/route_strings.dart';
-import 'package:go_router/go_router.dart';
-import '../utils/app_colors.dart';
+import 'package:flutter_training/state_management/bottom_routing_provier.dart';
+import 'package:provider/provider.dart';
 
-class Home extends StatefulWidget {
-  final Widget child;
-  const Home({Key? key, required this.child}) : super(key: key);
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        context.go(AppRouteConstants.home);
-        break;
-      case 1:
-        context.go(AppRouteConstants.search);
-        break;
-      case 2:
-        context.go(AppRouteConstants.checkout);
-        break;
-      case 3:
-        context.go(AppRouteConstants.profile);
-        break;
-    }
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+class Home extends StatelessWidget {
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: widget.child,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
-        backgroundColor: AppColors.whiteColor,
-        type: BottomNavigationBarType.fixed,
-        elevation: 0,
-        iconSize: 28,
-        selectedItemColor: AppColors.blackLabelColor,
-        unselectedItemColor: AppColors.cartCounterButtonColor,
-      ),
+    return Consumer<BottomRoutingProvider>(
+      builder:
+      ((context, provider, child) => Scaffold(
+        bottomNavigationBar: bottomNavBar(context),
+        body: provider.pages[provider.pageIndex],
+      )),
+    );
+  }
+
+  Consumer<BottomRoutingProvider> bottomNavBar(BuildContext context) {
+    return Consumer<BottomRoutingProvider>(
+      builder:
+      ((context, provider, child) => SizedBox(
+        height: 60,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {
+                provider.changePageIndex(0);
+              },
+              enableFeedback: false,
+              icon: Icon(Icons.home_filled),
+            ),
+
+            IconButton(
+              onPressed: () {
+                provider.changePageIndex(1);
+              },
+              enableFeedback: false,
+              icon: Icon(Icons.search),
+            ),
+
+            IconButton(
+              onPressed: () {
+                provider.changePageIndex(2);
+              },
+              enableFeedback: false,
+              icon: Icon(Icons.shopping_bag_outlined),
+            ),
+
+            IconButton(
+              onPressed: () {
+                provider.changePageIndex(3);
+              },
+              enableFeedback: false,
+              icon: Icon(Icons.person),
+            ),
+          ],
+        ),
+      )),
     );
   }
 }
