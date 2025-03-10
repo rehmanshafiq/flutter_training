@@ -24,7 +24,7 @@ class RemoteConfigProvider extends ChangeNotifier {
 
   Future<void> _initialize() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-        fetchTimeout: Duration(seconds: 10),
+        fetchTimeout: Duration(minutes: 1),
         minimumFetchInterval: Duration.zero));
     await _fetchConfig();
   }
