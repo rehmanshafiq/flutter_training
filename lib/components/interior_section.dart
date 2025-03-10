@@ -60,8 +60,8 @@ Widget buildInteriorCard({required String imagePath, required String title}) {
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 Center(
                   child: SizedBox(
-                    width: 30, // Set the desired width
-                    height: 30, // Set the desired height
+                    width: 30,
+                    height: 30,
                     child: CircularProgressIndicator(
                       value: downloadProgress.progress,
                       strokeWidth: 3,
