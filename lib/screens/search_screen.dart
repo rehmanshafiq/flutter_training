@@ -1,57 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/models/response_in_map.dart';
-import 'package:flutter_training/network_manager/repository.dart';
+import 'package:provider/provider.dart';
+import '../state_management/api_call_provider.dart';
 
-class SearchScreen extends StatefulWidget {
-
+class SearchScreen extends StatelessWidget {
   const SearchScreen({Key? key}) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
-}
-
-class _SearchScreenState extends State<SearchScreen> {
-
-  bool isLoading = true;
-  ResponseInMapModel responseInMapModel = ResponseInMapModel();
-
-  getData() {
-    Repository().getUserList().then((value) {
-      responseInMapModel = value;
-      isLoading = false;
-      setState(() {
-
-      });
-    }).onError((error, stackTrace) {
-      print('Error => ${error.toString()}');
-    });
-  }
-
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<ApiCallProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text("Get Api Call"),
+        title: const Text("Get API Call with Provider"),
       ),
-      body: isLoading? Center(child: CircularProgressIndicator(),) :
-      ListView.builder(
-        itemCount: responseInMapModel.data?.length??0,
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(responseInMapModel.data?[index].avatar??""),
-              ),
-              title: Text(responseInMapModel.data?[index].firstName??""),
-              subtitle: Text(responseInMapModel.data?[index].email??""),
-            );
-          }
+      body: userProvider.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+        itemCount: userProvider.responseInMapModel.data?.length ?? 0,
+        itemBuilder: (context, index) {
+          final user = userProvider.responseInMapModel.data?[index];
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(user?.avatar ?? ""),
+            ),
+            title: Text(user?.firstName ?? ""),
+            subtitle: Text(user?.email ?? ""),
+          );
+        },
       ),
     );
   }

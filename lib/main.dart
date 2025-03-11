@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_training/state_management/api_call_provider.dart';
 import 'package:flutter_training/state_management/bottom_routing_provier.dart';
 import 'package:flutter_training/state_management/firebase_remote_provider.dart';
 import 'package:flutter_training/utils//themes.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
-          ChangeNotifierProvider(create: (context) => BottomRoutingProvider())
+          ChangeNotifierProvider(create: (context) => BottomRoutingProvider()),
+          ChangeNotifierProvider(create: (context) => ApiCallProvider())
         ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
