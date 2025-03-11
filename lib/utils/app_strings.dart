@@ -24,4 +24,8 @@ class AppStrings {
   static const cardImagePath = "assets/images/yellow_theme.png";
   static const profileImagePath = "assets/images/profile.png";
 
+  static const selectImage = "Select image";
+  static const upload = "Upload";
+  static const multipart = "Multipart api call";
+
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_training/utils/app_strings.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
-        title: const Text("Multipart api call", style: TextStyle(color: Colors.black),),
+        title: const Text(AppStrings.multipart, style: TextStyle(color: Colors.black),),
       ),
       body: Padding(
           padding: const EdgeInsets.all(20),
@@ -44,7 +45,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text('Select image'),
+                  child: Text(AppStrings.selectImage),
                 ): Container(
                   height: 200,
                   margin: const EdgeInsets.only(bottom: 50),
@@ -64,7 +65,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                     onPressed: () {},
-                    child: loading? const CircularProgressIndicator(): Text('Upload'),
+                    child: loading? const CircularProgressIndicator(): Text(AppStrings.upload),
                 ),
               )
             ],
