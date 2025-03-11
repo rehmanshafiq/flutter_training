@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_training/widgets/text_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 import '../app_router/route_strings.dart';
 import '../components/designer_section.dart';
 import '../components/interior_section.dart';
@@ -76,7 +75,7 @@ class _CategoryListState extends State<CategoryList> {
 
           return GestureDetector(
             onTap: () {
-              context.push(AppRouteConstants.detail);
+              // context.go(AppRouteConstants.detail);
               setState(() {
                 selectedIndex = index;
               });

@@ -7,13 +7,7 @@ import '../widgets/text_widget.dart';
 Widget buildInteriorList() {
   return Consumer<RemoteConfigProvider>(
     builder: (context, provider, child) {
-      if (provider.isLoading) {
-        return const Center(child: CircularProgressIndicator());
-      }
 
-      if (provider.themes.isEmpty) {
-        return const Center(child: Text("No interior themes available"));
-      }
 
       return SizedBox(
         height: 240, // Adjusted to fit the card design

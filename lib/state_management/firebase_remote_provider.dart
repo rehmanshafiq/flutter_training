@@ -13,8 +13,6 @@ class RemoteConfigProvider extends ChangeNotifier {
 
   List<String>? _categories = [];
   List<String>? get categories => _categories;
-
-  // List<Map<String, String>> themes = [];
   List<InteriorTheme> themes = [];
 
 

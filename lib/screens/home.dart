@@ -28,7 +28,6 @@ class Home extends StatelessWidget {
               onPressed: () {
                 provider.changePageIndex(0);
               },
-              enableFeedback: false,
               icon: Icon(Icons.home_filled),
             ),
 
@@ -36,7 +35,6 @@ class Home extends StatelessWidget {
               onPressed: () {
                 provider.changePageIndex(1);
               },
-              enableFeedback: false,
               icon: Icon(Icons.search),
             ),
 
@@ -44,7 +42,6 @@ class Home extends StatelessWidget {
               onPressed: () {
                 provider.changePageIndex(2);
               },
-              enableFeedback: false,
               icon: Icon(Icons.shopping_bag_outlined),
             ),
 
@@ -52,7 +49,6 @@ class Home extends StatelessWidget {
               onPressed: () {
                 provider.changePageIndex(3);
               },
-              enableFeedback: false,
               icon: Icon(Icons.person),
             ),
           ],

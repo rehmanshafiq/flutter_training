@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // If using FlutterFire CLI
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   await dotenv.load(fileName: ".env");
   String name = dotenv.env['BASE_URL'] ?? 'https://www.facebook.com';
@@ -25,10 +25,6 @@ void main() async {
         path: 'assets/translations',
         fallbackLocale: Locale('en'),
         child: MyApp()
-        // ChangeNotifierProvider(
-        //   create: (_) => RemoteConfigProvider(),
-        //   child: const MyApp(),
-        // ),
     ),
   );
 }
