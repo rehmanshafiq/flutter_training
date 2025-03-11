@@ -4,15 +4,16 @@ import 'package:flutter_training/network_manager/dio_helper.dart';
 
 class Repository {
 
+  String baseUrl = 'https://reqres.in';
   static final DioHelper _dioHelper = DioHelper();
 
   Future<ResponseInMapModel> getUserList () async {
-    Map<String, dynamic> response = await _dioHelper.get(url: 'https://reqres.in/api/users?page=2');
+    Map<String, dynamic> response = await _dioHelper.get(url: '$baseUrl/api/users?page=2');
     return ResponseInMapModel.fromJson(response);
   }
 
   Future<CreateJobModel> postJobApi (Object requestBody) async {
-    Map<String, dynamic> response = await _dioHelper.post(url: 'https://reqres.in/api/users', requestBody: requestBody);
+    Map<String, dynamic> response = await _dioHelper.post(url: '$baseUrl/api/users', requestBody: requestBody);
     return CreateJobModel.fromJson(response);
   }
 }
