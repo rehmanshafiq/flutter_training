@@ -8,6 +8,10 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: MyText(AppStrings.detailScreen, style: Theme.of(context).textTheme.displayMedium));
+    return Scaffold(
+      body: Center(
+          child: MyText(AppStrings.detailScreen, style: Theme.of(context).textTheme.displayMedium)
+      ),
+    );
   }
 }

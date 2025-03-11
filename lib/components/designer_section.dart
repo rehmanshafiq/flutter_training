@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/widgets/text_widget.dart';
+import 'package:go_router/go_router.dart';
+import '../app_router/route_strings.dart';
 import '../utils/app_strings.dart';
 
 
@@ -23,10 +25,6 @@ Widget designNearList(BuildContext context) {
           MyText(
             AppStrings.designerHeading,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
-            // style: TextStyle(
-            //   fontSize: 20,
-            //   fontWeight: FontWeight.bold,
-            // ),
           ),
           const SizedBox(height: 12),
           SizedBox(
@@ -35,7 +33,9 @@ Widget designNearList(BuildContext context) {
               scrollDirection: Axis.horizontal,
               itemCount: imageUrls.length,
               itemBuilder: (context, index) {
-                return profileImage(imageUrls[index]);
+                return profileImage(imageUrls[index], () {
+                  context.push(AppRouteConstants.detail);
+                });
               },
             ),
           ),
@@ -44,16 +44,19 @@ Widget designNearList(BuildContext context) {
   );
 }
 
-Widget profileImage(String imageUrl) {
+Widget profileImage(String imageUrl, VoidCallback onTap) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 6.0),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(15),
-      child: Image.asset(
-        imageUrl,
-        width: 70,
-        height: 70,
-        fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Image.asset(
+          imageUrl,
+          width: 70,
+          height: 70,
+          fit: BoxFit.cover,
+        ),
       ),
     ),
   );
