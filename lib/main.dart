@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_training/state_management/api_call_provider.dart';
 import 'package:flutter_training/state_management/bottom_routing_provier.dart';
 import 'package:flutter_training/state_management/firebase_remote_provider.dart';
+import 'package:flutter_training/state_management/image_picker_provider.dart';
 import 'package:flutter_training/utils//themes.dart';
 import 'package:provider/provider.dart';
 import 'app_router/app_router.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
           ChangeNotifierProvider(create: (context) => BottomRoutingProvider()),
-          ChangeNotifierProvider(create: (context) => ApiCallProvider())
+          ChangeNotifierProvider(create: (context) => ApiCallProvider()),
+          ChangeNotifierProvider(create: (context) => ImagePickerProvider()),
         ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
