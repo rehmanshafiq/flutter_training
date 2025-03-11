@@ -24,6 +24,11 @@ Dio getDio() {
       onError: (DioException e, handler) {
         printValue(tag: 'STATUS CODE:', "${e.response?.statusCode??""}");
         printValue(tag: 'ERROR DATA:', e.response?.data??"");
+        if(e.response?.statusCode == 500) {
+          // Internal server error
+        } else if(e.response?.statusCode == 401) {
+          // Log out
+        }
         return handler.next(e);
       }
     )
