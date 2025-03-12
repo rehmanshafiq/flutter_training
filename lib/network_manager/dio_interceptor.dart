@@ -15,7 +15,7 @@ Dio getDio() {
         try {
           printValue(tag: 'REQUEST BODY:', jsonEncode(options.data));
         } catch(e) {
-          printValue(tag: 'REQUEST BODY ERROR:', e.toString());
+          var error = e.toString();
         }
         return handler.next(options);
       },
