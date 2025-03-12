@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../models/InteriorTheme.dart';
 
@@ -14,6 +15,11 @@ class RemoteConfigProvider extends ChangeNotifier {
   List<String>? _categories = [];
   List<String>? get categories => _categories;
   List<InteriorTheme> themes = [];
+
+  String? reqresBaseUrl;
+  String? multipartBaseUrl;
+
+  final _storage = GetStorage();
 
 
   RemoteConfigProvider() {
@@ -51,6 +57,19 @@ class RemoteConfigProvider extends ChangeNotifier {
             .toList();
 
         debugPrint("Parsed Themes: $themes");
+      }
+
+      // Fetch base URLs
+      String baseUrlsJson = _remoteConfig.getString("base_urls");
+      debugPrint("Base URLs JSON: $baseUrlsJson");
+
+      if (baseUrlsJson.isNotEmpty) {
+        final decodedBaseUrls = jsonDecode(baseUrlsJson) as Map<String, dynamic>;
+        reqresBaseUrl = decodedBaseUrls["reqres_base_url"];
+        multipartBaseUrl = decodedBaseUrls["multipart_base_url"];
+
+        _storage.write("reqres_base_url", reqresBaseUrl);
+        _storage.write("multipart_base_url", multipartBaseUrl);
       }
 
       _isLoading = false;
