@@ -29,5 +29,7 @@ class AppStrings {
   static const multipart = "Multipart api call";
 
   static const plzUpload = "Please select an image";
+  static const noImageSelected = "No image selected";
+  static const firstSelectIMage = "Please select an image first";
 
 }

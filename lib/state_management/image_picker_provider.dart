@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_training/network_manager/repository.dart';
+import 'package:flutter_training/utils/app_strings.dart';
 import 'package:image_picker/image_picker.dart';
 
 enum ImagePickerState { idle, loading, success, error }
@@ -29,7 +30,7 @@ class ImagePickerProvider extends ChangeNotifier {
         _fileName = file.name;
         _setState(ImagePickerState.success);
       } else {
-        _errorMessage = "No image selected";
+        _errorMessage = AppStrings.noImageSelected;
         _setState(ImagePickerState.error);
       }
     } catch (e) {
@@ -40,7 +41,7 @@ class ImagePickerProvider extends ChangeNotifier {
 
   Future<void> uploadImage() async {
     if (_selectedImage == null) {
-      _errorMessage = "Please select an image first";
+      _errorMessage = AppStrings.firstSelectIMage;
       _setState(ImagePickerState.error);
       return;
     }
