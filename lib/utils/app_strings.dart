@@ -31,5 +31,5 @@ class AppStrings {
   static const plzUpload = "Please select an image";
   static const noImageSelected = "No image selected";
   static const firstSelectIMage = "Please select an image first";
-
+  static const noDataAvailable = "No data available";
 }

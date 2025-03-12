@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_training/utils/app_strings.dart';
 import '../block_cubit/get_user_api_call_cubit.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -33,7 +34,7 @@ class SearchScreen extends StatelessWidget {
           } else if (state is UserFailure) {
             return Center(child: Text(state.message));
           } else {
-            return const Center(child: Text("No data available"));
+            return const Center(child: Text(AppStrings.noDataAvailable));
           }
         },
       ),
