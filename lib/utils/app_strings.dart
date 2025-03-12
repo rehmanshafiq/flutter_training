@@ -28,4 +28,6 @@ class AppStrings {
   static const upload = "Upload";
   static const multipart = "Multipart api call";
 
+  static const plzUpload = "Please select an image";
+
 }
