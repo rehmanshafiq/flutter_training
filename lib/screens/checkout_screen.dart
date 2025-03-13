@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../state_management/api_call_provider.dart';
+import '../block_cubit/post_job_api_cubit.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key}) : super(key: key);
@@ -16,45 +16,104 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final jobProvider = Provider.of<ApiCallProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text("Post API Call with Provider"),
+        title: const Text("Post API Call with Cubit"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(hintText: 'Enter Name'),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: jobController,
-              decoration: const InputDecoration(hintText: 'Enter Job'),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: jobProvider.isLoading
-                    ? null
-                    : () {
-                  jobProvider.postJob(
-                    nameController.text,
-                    jobController.text,
+      body: BlocProvider(
+        create: (context) => PostJobApiCallCubit(),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              // Name Input Field
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter Name',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Job Input Field
+              TextField(
+                controller: jobController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter Job',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Submit Button
+              BlocBuilder<PostJobApiCallCubit, ApiCallState>(
+                builder: (context, state) {
+                  return SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: state is ApiCallLoading
+                          ? null // Disable button when loading
+                          : () {
+                        // Trigger the API call
+                        context.read<PostJobApiCallCubit>().postJob(
+                          nameController.text,
+                          jobController.text,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: state is ApiCallLoading
+                          ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                          : const Text('Submit'),
+                    ),
                   );
                 },
-                child: jobProvider.isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Submit'),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+
+              // Display API Response or Error
+              BlocBuilder<PostJobApiCallCubit, ApiCallState>(
+                builder: (context, state) {
+                  if (state is ApiCallSuccess) {
+                    return Column(
+                      children: [
+                        Text(
+                          'Job Created Successfully!',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text('ID: ${state.createdJob.id}'),
+                        Text('Name: ${state.createdJob.name}'),
+                        Text('Job: ${state.createdJob.job}'),
+                      ],
+                    );
+                  } else if (state is ApiCallError) {
+                    return Text(
+                      'Error: ${state.error}',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  } else {
+                    return const SizedBox.shrink(); // Hide when no state
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

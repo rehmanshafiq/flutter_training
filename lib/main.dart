@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_training/block_cubit/post_job_api_cubit.dart';
 import 'package:flutter_training/state_management/api_call_provider.dart';
 import 'package:flutter_training/state_management/bottom_routing_provier.dart';
 import 'package:flutter_training/state_management/firebase_remote_provider.dart';
@@ -47,6 +48,9 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider(
               create: (context) => ApiCallCubit(Repository())..getData(),
+            ),
+            BlocProvider(
+              create: (context) => PostJobApiCallCubit(),
             ),
           ],
           child: Container(), // Placeholder for correct tree structure
