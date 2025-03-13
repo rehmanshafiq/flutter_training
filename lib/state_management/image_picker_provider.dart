@@ -1,52 +1,42 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_training/network_manager/repository.dart';
 import 'package:flutter_training/utils/app_strings.dart';
-import 'package:image_picker/image_picker.dart';
 
-enum ImagePickerState { idle, loading, success, error }
+class ImagePickerCubit extends Cubit<ImagePickerState> {
+  ImagePickerCubit() : super(ImagePickerInitial());
 
-class ImagePickerProvider extends ChangeNotifier {
-  ImagePickerState _state = ImagePickerState.idle;
+  final ImagePicker _imagePicker = ImagePicker();
   File? _selectedImage;
   String? _fileName;
-  String? _errorMessage;
-
-  ImagePickerState get state => _state;
-  File? get selectedImage => _selectedImage;
-  String? get fileName => _fileName;
-  String? get errorMessage => _errorMessage;
 
   Future<void> pickImage() async {
-    _setState(ImagePickerState.loading);
+    emit(ImagePickerLoading());
 
     try {
-      final imagePicker = ImagePicker();
-      final file = await imagePicker.pickImage(source: ImageSource.gallery);
+      final file = await _imagePicker.pickImage(source: ImageSource.gallery);
 
       if (file != null) {
         _selectedImage = File(file.path);
         _fileName = file.name;
-        _setState(ImagePickerState.success);
+        emit(ImagePickerSuccess(selectedImage: _selectedImage, fileName: _fileName));
       } else {
-        _errorMessage = AppStrings.noImageSelected;
-        _setState(ImagePickerState.error);
+        emit(ImagePickerError(AppStrings.noImageSelected));
       }
     } catch (e) {
-      _errorMessage = "Error picking image: $e";
-      _setState(ImagePickerState.error);
+      emit(ImagePickerError("Error picking image: $e"));
     }
   }
 
   Future<void> uploadImage() async {
     if (_selectedImage == null) {
-      _errorMessage = AppStrings.firstSelectIMage;
-      _setState(ImagePickerState.error);
+      emit(ImagePickerError(AppStrings.firstSelectIMage));
       return;
     }
 
-    _setState(ImagePickerState.loading);
+    emit(ImagePickerLoading());
 
     try {
       final formData = FormData.fromMap({
@@ -57,22 +47,35 @@ class ImagePickerProvider extends ChangeNotifier {
 
       print('Image URL: ${response.location}');
 
-      _setState(ImagePickerState.success);
+      emit(ImagePickerSuccess(selectedImage: _selectedImage, fileName: _fileName));
     } catch (e) {
-      _errorMessage = "Upload failed: $e";
-      _setState(ImagePickerState.error);
+      emit(ImagePickerError("Upload failed: $e"));
     }
-  }
-
-  void _setState(ImagePickerState newState) {
-    _state = newState;
-    notifyListeners();
   }
 
   void reset() {
     _selectedImage = null;
     _fileName = null;
-    _errorMessage = null;
-    _setState(ImagePickerState.idle);
+    emit(ImagePickerInitial());
   }
+}
+
+
+abstract class ImagePickerState {}
+
+class ImagePickerInitial extends ImagePickerState {}
+
+class ImagePickerLoading extends ImagePickerState {}
+
+class ImagePickerSuccess extends ImagePickerState {
+  final File? selectedImage;
+  final String? fileName;
+
+  ImagePickerSuccess({this.selectedImage, this.fileName});
+}
+
+class ImagePickerError extends ImagePickerState {
+  final String errorMessage;
+
+  ImagePickerError(this.errorMessage);
 }

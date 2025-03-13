@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
           ],
           child: Container(),
         ),
-        ChangeNotifierProvider(create: (context) => ImagePickerProvider()),
       ],
       child: Builder(
         builder: (context) {
