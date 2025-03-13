@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_training/utils/app_strings.dart';
 
 import '../block_cubit/post_job_api_cubit.dart';
 
@@ -27,7 +28,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              // Name Input Field
+
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(
@@ -37,7 +38,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Job Input Field
+
               TextField(
                 controller: jobController,
                 decoration: const InputDecoration(
@@ -55,9 +56,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: state is JobApiLoading
-                          ? null // Disable button when loading
+                          ? null
                           : () {
-                        // Trigger the API call
                         context.read<PostJobApiCubit>().postJob(
                           nameController.text,
                           jobController.text,
@@ -71,7 +71,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ? const CircularProgressIndicator(
                         color: Colors.white,
                       )
-                          : const Text('Submit'),
+                          : const Text(AppStrings.submit),
                     ),
                   );
                 },
