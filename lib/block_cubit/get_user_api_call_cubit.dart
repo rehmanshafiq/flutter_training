@@ -2,12 +2,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_training/models/response_in_map.dart';
 import 'package:flutter_training/network_manager/repository.dart';
 
-class ApiCallCubit extends Cubit<UserState> {
-  final Repository _repository;
+class GetUserApiCubit extends Cubit<UserState> {
+  final Repository _repository = Repository();
 
-  ApiCallCubit(this._repository) : super(UserInit());
+  GetUserApiCubit() : super(UserInit());
 
-  Future<void> getData() async {
+  Future<void> getUserListApi() async {
     emit(UserLoading());
     try {
       final responseInMapModel = await _repository.getUserList();

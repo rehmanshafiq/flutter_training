@@ -43,21 +43,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Wrapping Bloc providers inside MultiBlocProvider
         MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => ApiCallCubit(Repository())..getData(),
-            ),
-            BlocProvider(
-              create: (context) => PostJobApiCallCubit(),
-            ),
+            BlocProvider(create: (context) => GetUserApiCubit(),),
+            BlocProvider(create: (context) => PostJobApiCubit(),),
           ],
-          child: Container(), // Placeholder for correct tree structure
+          child: Container(),
         ),
 
-        // ChangeNotifier Providers
-        ChangeNotifierProvider(create: (context) => ApiCallProvider()),
         ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
         ChangeNotifierProvider(create: (context) => BottomRoutingProvider()),
         ChangeNotifierProvider(create: (context) => ImagePickerProvider()),

@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_training/network_manager/repository.dart';
 import '../models/create_job_model.dart';
 
-class PostJobApiCallCubit extends Cubit<ApiCallState> {
-  PostJobApiCallCubit() : super(ApiCallInitial());
+class PostJobApiCubit extends Cubit<ApiCallState> {
+  PostJobApiCubit() : super(ApiCallInitial());
 
   final Repository _repository = Repository();
 

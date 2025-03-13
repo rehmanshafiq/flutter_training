@@ -22,7 +22,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         title: const Text("Post API Call with Cubit"),
       ),
       body: BlocProvider(
-        create: (context) => PostJobApiCallCubit(),
+        create: (context) => PostJobApiCubit(),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -48,7 +48,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               const SizedBox(height: 20),
 
               // Submit Button
-              BlocBuilder<PostJobApiCallCubit, ApiCallState>(
+              BlocBuilder<PostJobApiCubit, ApiCallState>(
                 builder: (context, state) {
                   return SizedBox(
                     height: 50,
@@ -58,7 +58,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ? null // Disable button when loading
                           : () {
                         // Trigger the API call
-                        context.read<PostJobApiCallCubit>().postJob(
+                        context.read<PostJobApiCubit>().postJob(
                           nameController.text,
                           jobController.text,
                         );
@@ -79,7 +79,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               const SizedBox(height: 20),
 
               // Display API Response or Error
-              BlocBuilder<PostJobApiCallCubit, ApiCallState>(
+              BlocBuilder<PostJobApiCubit, ApiCallState>(
                 builder: (context, state) {
                   if (state is ApiCallSuccess) {
                     return Column(
