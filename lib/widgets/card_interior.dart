@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/widgets/text_widget.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import '../app_router/route_strings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../components/designer_section.dart';
 import '../components/interior_section.dart';
 import '../components/toolbar.dart';
 import '../state_management/firebase_remote_provider.dart';
+import '../widgets/text_widget.dart';
 
 class CardInterior extends StatelessWidget {
   const CardInterior({super.key});
@@ -23,22 +21,27 @@ class CardInterior extends StatelessWidget {
             const SizedBox(height: 20),
             toolbarHeading(context),
             const SizedBox(height: 20),
-            Consumer<RemoteConfigProvider>(
-              builder: (context, provider, child) {
-                if (provider.isLoading) {
+            BlocBuilder<RemoteConfigCubit, RemoteConfigState>(
+              builder: (context, state) {
+                if (state is RemoteConfigLoading) {
                   return const Center(child: CircularProgressIndicator());
+                } else if (state is RemoteConfigLoaded) {
+                  final categories = state.categories ?? [];
+                  if (categories.isEmpty) {
+                    return const Center(child: Text("No categories available"));
+                  }
+                  return CategoryList(categories: categories);
+                } else if (state is RemoteConfigError) {
+                  return Center(child: Text(state.message));
+                } else {
+                  return const Center(child: Text("Initializing..."));
                 }
-                final categories = provider.categories ?? [];
-                if (categories.isEmpty) {
-                  return const Center(child: Text("No categories available"));
-                }
-                return CategoryList(categories: categories);
               },
             ),
             Expanded(
               child: ListView(
                 children: [
-                  buildInteriorList(),
+                  const InteriorList(), // Use the updated InteriorList widget
                   const SizedBox(height: 20),
                   designNearList(context),
                 ],

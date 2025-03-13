@@ -1,30 +1,41 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../state_management/firebase_remote_provider.dart';
 import '../widgets/text_widget.dart';
 
-Widget buildInteriorList() {
-  return Consumer<RemoteConfigProvider>(
-    builder: (context, provider, child) {
+class InteriorList extends StatelessWidget {
+  const InteriorList({super.key});
 
-
-      return SizedBox(
-        height: 240, // Adjusted to fit the card design
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: provider.themes.length,
-          itemBuilder: (context, index) {
-            final theme = provider.themes[index];
-            return buildInteriorCard(
-              imagePath: theme.image,
-              title: theme.title,
-            );
-          },
-        ),
-      );
-    },
-  );
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RemoteConfigCubit, RemoteConfigState>(
+      builder: (context, state) {
+        if (state is RemoteConfigLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is RemoteConfigLoaded) {
+          return SizedBox(
+            height: 240,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: state.themes.length,
+              itemBuilder: (context, index) {
+                final theme = state.themes[index];
+                return buildInteriorCard(
+                  imagePath: theme.image,
+                  title: theme.title,
+                );
+              },
+            ),
+          );
+        } else if (state is RemoteConfigError) {
+          return Center(child: Text(state.message));
+        } else {
+          return const Center(child: Text("No data available"));
+        }
+      },
+    );
+  }
 }
 
 Widget buildInteriorCard({required String imagePath, required String title}) {
@@ -63,7 +74,7 @@ Widget buildInteriorCard({required String imagePath, required String title}) {
                   ),
                 ),
             errorWidget: (context, url, error) => Icon(Icons.error),
-          )
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(12.0),
