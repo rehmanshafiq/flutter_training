@@ -44,14 +44,9 @@ class MyApp extends StatelessWidget {
         MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => RemoteConfigCubit(),),
-            // BlocProvider(create: (context) => GetUserApiCubit(),),
-            // BlocProvider(create: (context) => PostJobApiCubit(),),
           ],
           child: Container(),
         ),
-
-        // ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
-        ChangeNotifierProvider(create: (context) => BottomRoutingProvider()),
         ChangeNotifierProvider(create: (context) => ImagePickerProvider()),
       ],
       child: Builder(

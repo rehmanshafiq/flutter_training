@@ -1,59 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/state_management/bottom_routing_provier.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../screens/checkout_screen.dart';
+import '../screens/profile_screen.dart';
+import '../screens/search_screen.dart';
+import '../state_management/bottom_routing_provier.dart';
+import '../widgets/card_interior.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BottomRoutingProvider>(
-      builder:
-      ((context, provider, child) => Scaffold(
+    return BlocProvider(
+      create: (context) => BottomRoutingCubit(),
+      child: Scaffold(
         bottomNavigationBar: bottomNavBar(context),
-        body: provider.pages[provider.pageIndex],
-      )),
+        body: BlocBuilder<BottomRoutingCubit, int>(
+          builder: (context, pageIndex) {
+            // Define your pages
+            final pages = [
+              CardInterior(),
+              SearchScreen(),
+              CheckoutScreen(),
+              ProfileScreen(),
+            ];
+            return pages[pageIndex]; // Display the current page
+          },
+        ),
+      ),
     );
   }
 
-  Consumer<BottomRoutingProvider> bottomNavBar(BuildContext context) {
-    return Consumer<BottomRoutingProvider>(
-      builder:
-      ((context, provider, child) => SizedBox(
-        height: 60,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              onPressed: () {
-                provider.changePageIndex(0);
-              },
+  Widget bottomNavBar(BuildContext context) {
+    return BlocBuilder<BottomRoutingCubit, int>(
+      builder: (context, pageIndex) {
+        return BottomNavigationBar(
+          backgroundColor: Colors.white,
+          currentIndex: pageIndex,
+          onTap: (index) {
+            context.read<BottomRoutingCubit>().changePageIndex(index);
+          },
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          unselectedItemColor: Colors.grey,
+          items: const [
+            BottomNavigationBarItem(
               icon: Icon(Icons.home_filled),
+              label: '',
             ),
-
-            IconButton(
-              onPressed: () {
-                provider.changePageIndex(1);
-              },
+            BottomNavigationBarItem(
               icon: Icon(Icons.search),
+              label: '',
             ),
-
-            IconButton(
-              onPressed: () {
-                provider.changePageIndex(2);
-              },
+            BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag_outlined),
+              label: '',
             ),
-
-            IconButton(
-              onPressed: () {
-                provider.changePageIndex(3);
-              },
+            BottomNavigationBarItem(
               icon: Icon(Icons.person),
+              label: '',
             ),
           ],
-        ),
-      )),
+        );
+      },
     );
   }
 }
