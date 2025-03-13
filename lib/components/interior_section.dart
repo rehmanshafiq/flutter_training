@@ -1,30 +1,43 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../utils/app_strings.dart';
-import '../models/Interior.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../state_management/firebase_remote_provider.dart';
+import '../widgets/text_widget.dart';
 
-final List<Interior> interiors = [
-  Interior(image: AppStrings.cardImagePath, title: AppStrings.cardHeading1),
-  Interior(image: AppStrings.cardImagePath, title: AppStrings.cardHeading2),
-  Interior(image: AppStrings.cardImagePath, title: AppStrings.cardHeading3),
-];
+class InteriorList extends StatelessWidget {
+  const InteriorList({super.key});
 
-Widget buildInteriorList() {
-  return SizedBox(
-    height: 240, // Adjusted to fit the card design
-    child: ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: interiors.length,
-      itemBuilder: (context, index) {
-        return buildInteriorCard(
-          imagePath: interiors[index].image,
-          title: interiors[index].title,
-        );
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RemoteConfigCubit, RemoteConfigState>(
+      builder: (context, state) {
+        if (state is RemoteConfigLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is RemoteConfigLoaded) {
+          return SizedBox(
+            height: 240,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: state.themes.length,
+              itemBuilder: (context, index) {
+                final theme = state.themes[index];
+                return buildInteriorCard(
+                  imagePath: theme.image,
+                  title: theme.title,
+                );
+              },
+            ),
+          );
+        } else if (state is RemoteConfigError) {
+          return Center(child: Text(state.message));
+        } else {
+          return const Center(child: Text("No data available"));
+        }
       },
-    ),
-  );
+    );
+  }
 }
 
-/// Interior Card UI
 Widget buildInteriorCard({required String imagePath, required String title}) {
   return Container(
     width: 180, // Adjust card width
@@ -44,16 +57,28 @@ Widget buildInteriorCard({required String imagePath, required String title}) {
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
-          child: Image.asset(
-            imagePath,
+          child: CachedNetworkImage(
             width: double.infinity,
             height: 150,
             fit: BoxFit.cover,
+            imageUrl: imagePath,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                Center(
+                  child: SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CircularProgressIndicator(
+                      value: downloadProgress.progress,
+                      strokeWidth: 3,
+                    ),
+                  ),
+                ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Text(
+          child: MyText(
             title,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),

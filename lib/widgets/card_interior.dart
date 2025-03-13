@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../components/designer_section.dart';
 import '../components/interior_section.dart';
 import '../components/toolbar.dart';
-import '../utils//app_strings.dart';
+import '../state_management/firebase_remote_provider.dart';
+import '../widgets/text_widget.dart';
 
-class CardInterior extends StatefulWidget {
+class CardInterior extends StatelessWidget {
   const CardInterior({super.key});
-
-  @override
-  _CardInteriorState createState() => _CardInteriorState();
-}
-
-class _CardInteriorState extends State<CardInterior> {
-
-  int selectedIndex = 0;
-
-  final List<String> categories = [
-    AppStrings.interior, AppStrings.sofa, AppStrings.chairs, AppStrings.lamp
-  ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,37 +21,66 @@ class _CardInteriorState extends State<CardInterior> {
             const SizedBox(height: 20),
             toolbarHeading(context),
             const SizedBox(height: 20),
-            buildCategoryList(),
+            BlocBuilder<RemoteConfigCubit, RemoteConfigState>(
+              builder: (context, state) {
+                if (state is RemoteConfigLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is RemoteConfigLoaded) {
+                  final categories = state.categories ?? [];
+                  if (categories.isEmpty) {
+                    return const Center(child: Text("No categories available"));
+                  }
+                  return CategoryList(categories: categories);
+                } else if (state is RemoteConfigError) {
+                  return Center(child: Text(state.message));
+                } else {
+                  return const Center(child: Text("Initializing..."));
+                }
+              },
+            ),
             Expanded(
-                child: ListView(
-                  children: [
-                    buildInteriorList(),
-                    const SizedBox(height: 20,),
-                    designNearList(context),
-                  ],
-                )
-            )
+              child: ListView(
+                children: [
+                  const InteriorList(), // Use the updated InteriorList widget
+                  const SizedBox(height: 20),
+                  designNearList(context),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
 
+/// Category List with selection functionality
+class CategoryList extends StatefulWidget {
+  final List<String> categories;
+  const CategoryList({super.key, required this.categories});
 
-  /// Horizontal Scrollable Category List
-  Widget buildCategoryList() {
+  @override
+  _CategoryListState createState() => _CategoryListState();
+}
+
+class _CategoryListState extends State<CategoryList> {
+  int selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
-      height: 50, // Fixed height for the category list
+      height: 50,
       child: ListView.builder(
-        scrollDirection: Axis.horizontal, // Makes it scrollable horizontally
-        itemCount: categories.length,
+        scrollDirection: Axis.horizontal,
+        itemCount: widget.categories.length,
         itemBuilder: (context, index) {
           bool isSelected = selectedIndex == index;
 
           return GestureDetector(
             onTap: () {
+              // context.go(AppRouteConstants.detail);
               setState(() {
-                selectedIndex = index; // Update selection
+                selectedIndex = index;
               });
             },
             child: Container(
@@ -71,11 +89,11 @@ class _CardInteriorState extends State<CardInterior> {
               decoration: BoxDecoration(
                 color: isSelected ? Colors.white : Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                border: isSelected ? Border.all(color: Colors.grey, width: 2) : Border.all(color: Colors.grey, width: 2),
+                border: Border.all(color: Colors.grey, width: 2),
               ),
               child: Center(
-                child: Text(
-                  categories[index],
+                child: MyText(
+                  widget.categories[index],
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -89,5 +107,4 @@ class _CardInteriorState extends State<CardInterior> {
       ),
     );
   }
-
 }

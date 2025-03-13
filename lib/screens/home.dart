@@ -1,51 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/screens/profile_screen.dart';
-import 'package:flutter_training/widgets/text_widget.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_strings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../screens/checkout_screen.dart';
+import '../screens/profile_screen.dart';
+import '../screens/search_screen.dart';
+import '../state_management/bottom_routing_provier.dart';
 import '../widgets/card_interior.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
-}
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => BottomRoutingCubit(),
+      child: Scaffold(
+        bottomNavigationBar: bottomNavBar(context),
+        body: BlocBuilder<BottomRoutingCubit, int>(
+          builder: (context, pageIndex) {
+            final pages = [
+              CardInterior(),
+              SearchScreen(),
+              CheckoutScreen(),
+              ProfileScreen(),
+            ];
+            return pages[pageIndex];
+          },
+        ),
+      ),
+    );
+  }
 
-class _HomeState extends State<Home> {
-   int _currentIndex = 0;
-
-  final List<Widget> _screens = [
-    CardInterior(), // Your first screen with "Designer Near You"
-    Center(child: MyText(AppStrings.searchScreen, style: TextStyle(fontSize: 24))),
-    Center(child: MyText(AppStrings.checkoutScreen, style: TextStyle(fontSize: 24))),
-    ProfileScreen(),
-  ];
-
-   @override
-   Widget build(BuildContext context) {
-     return Scaffold(
-       body: _screens[_currentIndex], // Display selected screen
-       bottomNavigationBar: BottomNavigationBar(
-         currentIndex: _currentIndex,
-         onTap: (index) {
-           setState(() {
-             _currentIndex = index;
-           });
-         },
-         items: const [
-           BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-           BottomNavigationBarItem(icon: Icon(Icons.search), label: ""),
-           BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: ""),
-           BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
-         ],
-         backgroundColor: AppColors.whiteColor,
-         type: BottomNavigationBarType.fixed,
-         elevation: 0,
-         iconSize: 28,
-         selectedItemColor: AppColors.blackLabelColor,
-         unselectedItemColor: AppColors.cartCounterButtonColor,
-       ),
-     );
-   }
+  Widget bottomNavBar(BuildContext context) {
+    return BlocBuilder<BottomRoutingCubit, int>(
+      builder: (context, pageIndex) {
+        return BottomNavigationBar(
+          backgroundColor: Colors.white,
+          currentIndex: pageIndex,
+          onTap: (index) {
+            context.read<BottomRoutingCubit>().changePageIndex(index);
+          },
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          unselectedItemColor: Colors.grey,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag_outlined),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: '',
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
