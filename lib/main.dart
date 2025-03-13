@@ -41,13 +41,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => GetUserApiCubit(),),
-            BlocProvider(create: (context) => PostJobApiCubit(),),
-          ],
-          child: Container(),
-        ),
+        // MultiBlocProvider(
+        //   providers: [
+        //     // BlocProvider(create: (context) => GetUserApiCubit(),),
+        //     BlocProvider(create: (context) => PostJobApiCubit(),),
+        //   ],
+        //   child: Container(),
+        // ),
 
         ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
         ChangeNotifierProvider(create: (context) => BottomRoutingProvider()),
