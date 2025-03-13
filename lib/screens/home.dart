@@ -17,14 +17,13 @@ class Home extends StatelessWidget {
         bottomNavigationBar: bottomNavBar(context),
         body: BlocBuilder<BottomRoutingCubit, int>(
           builder: (context, pageIndex) {
-            // Define your pages
             final pages = [
               CardInterior(),
               SearchScreen(),
               CheckoutScreen(),
               ProfileScreen(),
             ];
-            return pages[pageIndex]; // Display the current page
+            return pages[pageIndex];
           },
         ),
       ),
