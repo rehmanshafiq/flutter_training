@@ -48,13 +48,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               const SizedBox(height: 20),
 
               // Submit Button
-              BlocBuilder<PostJobApiCubit, ApiCallState>(
+              BlocBuilder<PostJobApiCubit, JobApiState>(
                 builder: (context, state) {
                   return SizedBox(
                     height: 50,
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: state is ApiCallLoading
+                      onPressed: state is JobApiLoading
                           ? null // Disable button when loading
                           : () {
                         // Trigger the API call
@@ -67,7 +67,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         foregroundColor: Colors.white,
                       ),
-                      child: state is ApiCallLoading
+                      child: state is JobApiLoading
                           ? const CircularProgressIndicator(
                         color: Colors.white,
                       )
@@ -79,9 +79,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               const SizedBox(height: 20),
 
               // Display API Response or Error
-              BlocBuilder<PostJobApiCubit, ApiCallState>(
+              BlocBuilder<PostJobApiCubit, JobApiState>(
                 builder: (context, state) {
-                  if (state is ApiCallSuccess) {
+                  if (state is JobApiSuccess) {
                     return Column(
                       children: [
                         Text(
@@ -98,7 +98,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Text('Job: ${state.createdJob.job}'),
                       ],
                     );
-                  } else if (state is ApiCallError) {
+                  } else if (state is JobApiError) {
                     return Text(
                       'Error: ${state.error}',
                       style: TextStyle(

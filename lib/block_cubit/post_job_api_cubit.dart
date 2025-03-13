@@ -2,13 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_training/network_manager/repository.dart';
 import '../models/create_job_model.dart';
 
-class PostJobApiCubit extends Cubit<ApiCallState> {
-  PostJobApiCubit() : super(ApiCallInitial());
+class PostJobApiCubit extends Cubit<JobApiState> {
+  PostJobApiCubit() : super(JobApiInitial());
 
   final Repository _repository = Repository();
 
   Future<void> postJob(String name, String job) async {
-    emit(ApiCallLoading());
+    emit(JobApiLoading());
 
     try {
       Map<String, dynamic> params = {
@@ -16,30 +16,30 @@ class PostJobApiCubit extends Cubit<ApiCallState> {
         "job": job,
       };
       final createdJob = await _repository.postJobApi(params);
-      emit(ApiCallSuccess(createdJob));
+      emit(JobApiSuccess(createdJob));
       print("Id: ${createdJob.id}, Name: ${createdJob.name}, Job: ${createdJob.job}");
     } catch (error) {
-      emit(ApiCallError(error.toString()));
+      emit(JobApiError(error.toString()));
       print('Error: ${error.toString()}');
     }
   }
 }
 
 
-abstract class ApiCallState {}
+abstract class JobApiState {}
 
-class ApiCallInitial extends ApiCallState {}
+class JobApiInitial extends JobApiState {}
 
-class ApiCallLoading extends ApiCallState {}
+class JobApiLoading extends JobApiState {}
 
-class ApiCallSuccess extends ApiCallState {
+class JobApiSuccess extends JobApiState {
   final CreateJobModel createdJob;
 
-  ApiCallSuccess(this.createdJob);
+  JobApiSuccess(this.createdJob);
 }
 
-class ApiCallError extends ApiCallState {
+class JobApiError extends JobApiState {
   final String error;
 
-  ApiCallError(this.error);
+  JobApiError(this.error);
 }
