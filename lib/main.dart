@@ -3,14 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_training/block_cubit/post_job_api_cubit.dart';
-import 'package:flutter_training/state_management/bottom_routing_provier.dart';
-import 'package:flutter_training/state_management/firebase_remote_provider.dart';
-import 'package:flutter_training/state_management/image_picker_provider.dart';
+import 'package:flutter_training/state_management/firebase_remote_config_cubit.dart';
 import 'package:flutter_training/utils/themes.dart';
 import 'package:provider/provider.dart';
 import 'app_router/app_router.dart';
-import 'block_cubit/get_user_api_call_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {

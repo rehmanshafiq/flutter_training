@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../state_management/firebase_remote_provider.dart';
+import '../state_management/firebase_remote_config_cubit.dart';
+import '../utils/app_strings.dart';
 import '../widgets/text_widget.dart';
 
 class InteriorList extends StatelessWidget {
@@ -31,7 +32,7 @@ class InteriorList extends StatelessWidget {
         } else if (state is RemoteConfigError) {
           return Center(child: Text(state.message));
         } else {
-          return const Center(child: Text("No data available"));
+          return const Center(child: Text(AppStrings.noDataAvailable));
         }
       },
     );

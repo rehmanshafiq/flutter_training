@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../components/designer_section.dart';
 import '../components/interior_section.dart';
 import '../components/toolbar.dart';
-import '../state_management/firebase_remote_provider.dart';
+import '../state_management/firebase_remote_config_cubit.dart';
 import '../widgets/text_widget.dart';
 
 class CardInterior extends StatelessWidget {
@@ -41,7 +41,7 @@ class CardInterior extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  const InteriorList(), // Use the updated InteriorList widget
+                  const InteriorList(),
                   const SizedBox(height: 20),
                   designNearList(context),
                 ],
@@ -54,7 +54,7 @@ class CardInterior extends StatelessWidget {
   }
 }
 
-/// Category List with selection functionality
+
 class CategoryList extends StatefulWidget {
   final List<String> categories;
   const CategoryList({super.key, required this.categories});

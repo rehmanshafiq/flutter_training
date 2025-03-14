@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../screens/checkout_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/search_screen.dart';
-import '../state_management/bottom_routing_provier.dart';
+import '../state_management/bottom_routing_cubit.dart';
 import '../widgets/card_interior.dart';
 
 class Home extends StatelessWidget {

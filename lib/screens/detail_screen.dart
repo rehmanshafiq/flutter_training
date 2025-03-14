@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_training/utils/app_strings.dart';
-import '../state_management/image_picker_provider.dart';
+import '../state_management/image_picker_cubit.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen({super.key});
@@ -33,7 +33,7 @@ class DetailScreen extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        context.read<ImagePickerCubit>().pickImage(); // Pick image
+                        context.read<ImagePickerCubit>().pickImage();
                       },
                       child: state is ImagePickerSuccess && state.selectedImage != null
                           ? Container(
@@ -68,7 +68,7 @@ class DetailScreen extends StatelessWidget {
                             ? null
                             : () async {
                           if (state is ImagePickerSuccess && state.selectedImage != null) {
-                            await context.read<ImagePickerCubit>().uploadImage(); // Upload image
+                            await context.read<ImagePickerCubit>().uploadImage();
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text(AppStrings.plzUpload)),
