@@ -1,16 +1,12 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'dart:io';
+import 'internet_service.dart';
 
 class GraphQLService {
-  final HttpLink httpLink = HttpLink(
-    'https://379923-7e.myshopify.com/api/2024-10/graphql.json',
-    defaultHeaders: {
-      'X-Shopify-Storefront-Access-Token': 'd885c1c7722a638ec9c2703288b0c90f',
-      'Content-Type': 'application/json',
-    },
-  );
+  late String shopifyBaseURl;
+  late String accessToken;
 
   late final GraphQLClient client;
+  final InternetService _internetService = InternetService();
 
   final Policies defaultPolicies = Policies(
     cacheReread: CacheRereadPolicy.ignoreAll,
@@ -19,7 +15,15 @@ class GraphQLService {
 
   final Duration queryRequestTimeout = Duration(seconds: 30);
 
-  GraphQLService() {
+  GraphQLService(this.shopifyBaseURl, this.accessToken) {
+    final HttpLink httpLink = HttpLink(
+      shopifyBaseURl,
+      defaultHeaders: {
+        'X-Shopify-Storefront-Access-Token': accessToken,
+        'Content-Type': 'application/json',
+      },
+    );
+
     client = GraphQLClient(
       link: httpLink,
       cache: GraphQLCache(),
@@ -30,16 +34,19 @@ class GraphQLService {
   }
 
   Future<QueryResult> performQuery(String query) async {
+    bool isConnected = await _internetService.checkInternetIsConnected();
+    if (!isConnected) {
+      throw Exception('No Internet Connection');
+    }
+
     QueryOptions options = QueryOptions(
       document: gql(query),
       fetchPolicy: FetchPolicy.networkOnly,
       pollInterval: queryRequestTimeout,
     );
 
-    late QueryResult result;
     try {
-      result = await client.query(options);
-      return result;
+      return await client.query(options);
     } catch (e) {
       print('GraphQL Error: ${e.toString()}');
       rethrow;

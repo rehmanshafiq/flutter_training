@@ -22,9 +22,14 @@ void main() async {
   String baseUrl = dotenv.env['BASE_URL'] ?? 'https://www.facebook.com';
   print('Base URL: $baseUrl');
 
-  final graphQLService = GraphQLService();
+  String shopifyBaseUrl = dotenv.env['SHOPIFY_BASE_URL'] ?? "";
+  String accessToken = dotenv.env['ACCESS_TOKEN'] ?? "";
+
+  print("SHOPIFY BASE URL::: $shopifyBaseUrl ACCESS_TOKEN $accessToken");
+
+  final graphQLService = GraphQLService(shopifyBaseUrl, accessToken);
   final response = await graphQLService.performQuery(CollectionsQuery);
-  print(response.data);
+  print("GRAPH_QL RESPONSE:::: ${response.data}");
 
   runApp(
     EasyLocalization(
