@@ -8,6 +8,8 @@ import 'package:flutter_training/utils/themes.dart';
 import 'package:provider/provider.dart';
 import 'app_router/app_router.dart';
 import 'firebase_options.dart';
+import 'graphql/collection_query.dart';
+import 'graphql/graphql_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +21,10 @@ void main() async {
 
   String baseUrl = dotenv.env['BASE_URL'] ?? 'https://www.facebook.com';
   print('Base URL: $baseUrl');
+
+  final graphQLService = GraphQLService();
+  final response = await graphQLService.performQuery(CollectionsQuery);
+  print(response.data);
 
   runApp(
     EasyLocalization(
