@@ -52,4 +52,28 @@ class GraphQLService {
       rethrow;
     }
   }
+
+  Future<QueryResult> performQueryWithParams({
+    required String query,
+    required Map<String, dynamic> params,
+  }) async {
+    QueryOptions options = QueryOptions(
+      document: gql(query),
+      variables: params,
+    );
+
+    late QueryResult result;
+    try {
+      final connectivity = await _internetService.checkInternetIsConnected();
+      if (!connectivity) throw GraphQLError(message: 'No Internet');
+
+      result = await client.query(options);
+      return result;
+    } on GraphQLError catch (e) {
+      if (e.message == 'No Internet') {
+        throw NetworkException(originalException: 'No Internet', uri: Uri());
+      }
+      rethrow;
+    }
+  }
 }

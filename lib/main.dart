@@ -31,6 +31,13 @@ void main() async {
   final response = await graphQLService.performQuery(CollectionsQuery);
   print("GRAPH_QL RESPONSE:::: ${response.data}");
 
+  var response2 = await graphQLService.performQueryWithParams(
+    query: collectionsQuery,
+    params: collectionsParams,
+  );
+
+  print("GraphQL Response222::: ${response2.data}");
+
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
